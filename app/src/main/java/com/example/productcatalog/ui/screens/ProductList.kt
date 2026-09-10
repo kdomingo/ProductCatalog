@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Clear
@@ -28,7 +29,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +40,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.example.productcatalog.data.models.Product
@@ -47,7 +52,13 @@ fun ProductListScreen(
     viewModel: ProductListViewModel = viewModel()
 ) {
 
-    val searchFieldState = TextFieldState()
+    val searchFieldState = rememberTextFieldState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(searchFieldState) {
+        snapshotFlow { searchFieldState.text }
+            .collect { text -> viewModel.search(text.toString()) }
+    }
 
     Scaffold(modifier = modifier) {
         Column(modifier = Modifier.padding(it)) {
@@ -64,7 +75,7 @@ fun ProductListScreen(
                     }
                 })
 
-            ProductList(products = emptyList())
+            ProductList(products = state.products)
         }
     }
 }

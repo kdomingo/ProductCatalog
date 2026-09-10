@@ -7,7 +7,7 @@ import com.example.productcatalog.data.models.QueryOptions
 class ProductRepositoryImpl(private val datasource: ProductDatasource): ProductRepository {
 
     override suspend fun fetchAll(options: QueryOptions): List<Product> {
-        return datasource.fetchAll(options)
+        return datasource.fetchAll(options).products
     }
 
     override suspend fun fetch(id: String): Product {

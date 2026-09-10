@@ -1,6 +1,7 @@
 package com.example.productcatalog.data.datasource
 
 import com.example.productcatalog.data.models.Product
+import com.example.productcatalog.data.models.ProductsResponse
 import com.example.productcatalog.data.models.QueryOptions
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -11,9 +12,9 @@ class ProductDatasourceImpl(
     private val client: HttpClient
 ) : ProductDatasource {
 
-    override suspend fun fetchAll(options: QueryOptions): List<Product> {
+    override suspend fun fetchAll(options: QueryOptions): ProductsResponse {
         return client.get {
-            options.query.takeIf { it.isNotEmpty() }?.let { query ->
+            options.query?.takeIf { it.isNotEmpty() }?.let { query ->
                 parameter("q", query)
             }
             parameter("limit", options.limit)

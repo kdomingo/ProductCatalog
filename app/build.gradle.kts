@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.material.icons.core)
 
     // Koin for D. I.
     implementation(platform(libs.koin.bom))

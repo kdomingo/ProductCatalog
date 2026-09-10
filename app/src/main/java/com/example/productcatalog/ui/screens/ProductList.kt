@@ -45,11 +45,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.example.productcatalog.data.models.Product
 import com.example.productcatalog.ui.viewmodels.ProductListViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ProductListScreen(
     modifier: Modifier = Modifier,
-    viewModel: ProductListViewModel = viewModel()
+    viewModel: ProductListViewModel = koinViewModel()
 ) {
 
     val searchFieldState = rememberTextFieldState()
